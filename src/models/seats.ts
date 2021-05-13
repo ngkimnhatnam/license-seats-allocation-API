@@ -42,3 +42,36 @@ export const countCurrentLicenseSeat = (license_id: number): Promise<string> => 
     });
   });
 };
+
+export const findOneByLicenseIdAndEmail = (license_id: number, user_email: string): Promise<any[]> => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `SELECT * FROM seats 
+      WHERE license_id = $1 AND user_email = $2 AND lease_end > (SELECT EXTRACT(EPOCH FROM NOW()))`;
+    const queryValues = [license_id, user_email];
+
+    SQL.query(sqlQuery, queryValues, (err, res) => {
+      if (err) {
+        eventBus.emit('database-error', err);
+        reject(err);
+      }
+      resolve(res.rows);
+    });
+  });
+};
+
+export const extendOne = (new_lease_end: number, seat_id: number) => {
+  //@ts-ignore
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `UPDATE seats SET lease_end = $1 
+      WHERE id = $2`;
+    const queryValues = [new_lease_end, seat_id];
+
+    SQL.query(sqlQuery, queryValues, (err, res) => {
+      if (err) {
+        eventBus.emit('database-error', err);
+        reject(err);
+      }
+      resolve(res);
+    });
+  });
+};
