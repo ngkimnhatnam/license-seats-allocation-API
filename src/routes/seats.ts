@@ -2,10 +2,10 @@
 import express from 'express';
 
 // Controller import
-import * as licenseController from '../controllers/licenses';
+import * as seatController from '../controllers/seats';
 
 const router = express.Router();
 
-router.post('/licenses', licenseController.addNewLicense);
+router.post('/seats', seatController.addNewSeat);
 
 export default router;
