@@ -2,6 +2,9 @@
 import SQL from '../configs/database';
 import eventBus from '../subscriptions/eventEmitter';
 
+// Type import
+import { QueryResult } from 'pg';
+
 export interface SeatCreationInput {
   license_id: number;
   user_email: string;
@@ -59,12 +62,28 @@ export const findOneByLicenseIdAndEmail = (license_id: number, user_email: strin
   });
 };
 
-export const extendOne = (new_lease_end: number, seat_id: number) => {
+export const extendOne = (new_lease_end: number, seat_id: number): Promise<QueryResult<any>> => {
   //@ts-ignore
   return new Promise((resolve, reject) => {
     const sqlQuery = `UPDATE seats SET lease_end = $1 
       WHERE id = $2`;
     const queryValues = [new_lease_end, seat_id];
+
+    SQL.query(sqlQuery, queryValues, (err, res) => {
+      if (err) {
+        eventBus.emit('database-error', err);
+        reject(err);
+      }
+      resolve(res);
+    });
+  });
+};
+
+export const releaseOne = (user_email: string): Promise<QueryResult<any>> => {
+  return new Promise((resolve, reject) => {
+    const sqlQuery = `UPDATE seats SET lease_end = (SELECT EXTRACT(EPOCH FROM NOW())) 
+      WHERE user_email = $1 AND lease_end > (SELECT EXTRACT(EPOCH FROM NOW()))`;
+    const queryValues = [user_email];
 
     SQL.query(sqlQuery, queryValues, (err, res) => {
       if (err) {

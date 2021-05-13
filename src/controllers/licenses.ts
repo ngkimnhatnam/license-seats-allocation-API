@@ -4,7 +4,7 @@ import * as licenseService from '../services/licenses';
 // Dependencies import
 import { Request, Response } from 'express';
 
-export const addNewLicense = async (req: Request, res: Response) => {
+export const addNewLicense = async (req: Request, res: Response): Promise<void> => {
   const payload = {
     license_key: req.body.license_key,
     email_domain: req.body.email_domain,

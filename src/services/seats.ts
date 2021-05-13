@@ -74,3 +74,15 @@ const prepareSeatReservationInfo = (license_id: number, user_email: string, leas
     lease_end,
   };
 };
+
+export const handleSeatRelease = async (user_email: string) => {
+  try {
+    await seatModel.releaseOne(user_email);
+    return {
+      message: 'Seat released successfully',
+      status: 200,
+    };
+  } catch (err) {
+    throw { message: 'Something went wrong', status: 500 };
+  }
+};
