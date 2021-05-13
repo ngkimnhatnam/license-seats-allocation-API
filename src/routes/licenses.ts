@@ -8,4 +8,6 @@ const router = express.Router();
 
 router.post('/licenses', licenseController.addNewLicense);
 
+router.post('/licenses/reservation', licenseController.reserveFromLicense);
+
 export default router;
