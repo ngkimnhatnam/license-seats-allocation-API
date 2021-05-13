@@ -9,7 +9,7 @@
     "start": "node ./dist/server.js",
     "lint": "npx eslint src --fix",
     "predev": "npm run build",
-    "dev": "nodemon --config nodemon.json src/server.ts",
+    "dev": "nodemon -r dotenv/config src/server.ts",
     "test": "echo \"Error: no test specified\""
   },
   "repository": {
@@ -33,6 +33,7 @@
     "@types/pg": "^7.14.11",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
+    "dotenv": "^9.0.2",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

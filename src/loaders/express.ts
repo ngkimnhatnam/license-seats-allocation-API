@@ -2,6 +2,9 @@
 import express from 'express';
 import { Request, Response, NextFunction, Application } from 'express';
 
+// Routes import
+import licenseRoutes from '../routes/licenses';
+
 const ExpressLoaders = (app: Application): Application => {
   app.use(express.urlencoded({ extended: true }));
 
@@ -13,6 +16,7 @@ const ExpressLoaders = (app: Application): Application => {
   });
 
   app.use(express.json({ limit: '10kb' }));
+  app.use('/api/v1', licenseRoutes);
 
   return app;
 };
