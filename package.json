@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p ./",
+    "prestart": "npm run build",
+    "start": "node ./dist/server.js",
+    "lint": "npx eslint src --fix",
+    "predev": "npm run build",
+    "dev": "nodemon --config nodemon.json src/server.ts",
+    "test": "echo \"Error: no test specified\""
   },
   "repository": {
     "type": "git",
